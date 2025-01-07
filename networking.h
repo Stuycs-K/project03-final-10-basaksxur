@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <errno.h>
+#include <time.h>
 
 #ifndef NETWORKING_H
 #define NETWORKING_H
@@ -15,19 +16,13 @@
 #define BUFFER_SIZE 1000
 #define MAX_CLIENTS 2
 
-#define SYN 0
-#define SYN_ACK 1
-#define ACK 2
-#define MESSAGE 3
-#define EXIT 4
-
 int printerror();
 
 int server_handshake(int *to_client);
 int client_handshake(int *to_server);
 
 //for basic & persistent servers
-int server_connect(int from_client);
+int server_handshake_half(int *to_client, int from_client);
 
 //for forking server
 int server_setup();

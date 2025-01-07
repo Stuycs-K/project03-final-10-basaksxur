@@ -8,6 +8,7 @@
 int to_client = -1;
 int from_client = -1;
 int connected = 0;
+static int x = 0;
 
 static void sighandler(int signo) {
     if (signo == SIGINT) {
@@ -33,11 +34,13 @@ int main(){
         from_client = server_setup();
         printf("Connected to client!\n");
         connected = 1;
+        x++;
         if (fork() == 0) {
             to_client = server_handshake_half(&to_client, from_client);
             while (connected) {
                 //the game
             }
+            printf("%d\n", x);
             close(to_client);
             exit(0);
         }
