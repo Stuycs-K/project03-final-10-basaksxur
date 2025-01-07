@@ -5,10 +5,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+
+#define KEY 28964218
+
+
 int to_client = -1;
 int from_client = -1;
 int connected = 0;
-static int x = 0;
 
 static void sighandler(int signo) {
     if (signo == SIGINT) {
@@ -34,11 +40,25 @@ int main(){
         from_client = server_setup();
         printf("Connected to client!\n");
         connected = 1;
-        x++;
+        int shmd;
+        int *playercount;
+        shmd = shmget(KEY, sizeof(int), IPC_CREAT | 0600);
+        if (shmd == -1) {
+            printerror();
+        }
+        playercount = (int *) shmat(shmid, 0, 0);
+        if (playercount == (int *) -1) {
+            printerror();
+        }
+        *playercount = 0;
+        printf("shmd: %d\n", shmd);
         if (fork() == 0) {
             to_client = server_handshake_half(&to_client, from_client);
             while (connected) {
-                //the game
+                *playercount++;
+                if (*playercount==1) {
+                    printf("Client 1 connected, waiting on second client to start...\n");
+                }
             }
             printf("%d\n", x);
             close(to_client);
