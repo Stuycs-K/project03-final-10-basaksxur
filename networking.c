@@ -6,24 +6,29 @@
 #include <sys/stat.h> 
 #include <unistd.h> 
 
+int printerror(){
+    printf("Error: [%d] (%s)\n", errno, strerror(errno));
+    return 0;
+}
+
 int server_setup(){
     if (access(WKP, F_OK) == 0) {
         if (unlink(WKP) == -1) {
-            printf("Error: %s\n", strerror(errno));
+            printerror();
             exit(EXIT_FAILURE);
         }
     }
     if (mkfifo(WKP, 0666) == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     int from_client = open(WKP, O_RDONLY);
     if (from_client == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     if (unlink(WKP) == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     return from_client;
@@ -38,19 +43,19 @@ int server_handshake(int *to_client){
 int client_handshake(int *to_server){
     *to_server = open(WKP, O_WRONLY);
     if (*to_server == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     char PP[HANDSHAKE_BUFFER_SIZE];
     sprintf(PP, "%d", getpid());
     if (access(PP, F_OK) == 0) {
         if (unlink(PP) == -1) {
-            printf("Error: %s\n", strerror(errno));
+            printerror();
             exit(EXIT_FAILURE);
         }
     }
     if (mkfifo(PP, 0666) == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     write(*to_server, PP, HANDSHAKE_BUFFER_SIZE);
@@ -58,7 +63,7 @@ int client_handshake(int *to_server){
     int SYN_ACK;
     read(downstream, &SYN_ACK, sizeof(int));
     if (unlink(PP) == -1) {
-        printf("Error: %s\n", strerror(errno));
+        printerror();
         exit(EXIT_FAILURE);
     }
     int ACK = SYN_ACK + 1;
@@ -78,7 +83,7 @@ int server_handshake_half(int *to_client, int from_client){
     int ACK;
     read(from_client, &ACK, sizeof(int));
     if (ACK != SYN_ACK + 1) {
-        printf("Error\n");
+        printerror();
         exit(EXIT_FAILURE);
     }
     return *to_client;
