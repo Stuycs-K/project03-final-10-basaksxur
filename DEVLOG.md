@@ -2,10 +2,10 @@
 
 This document must be updated daily by EACH group member.
 
-## Player 1
+## Ray Xu
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-06 - Setup program structure
+Added basic files and functions needed to get a very basic concept done, nothing filled in yet. ~ 10 minutes
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
