@@ -10,10 +10,10 @@ Added basic files and functions needed to get a very basic concept done, nothing
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
 
-## Player 2
+## Souvik Basak
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-06 - Setup stuff
+Worked on PROPOSAL.md. ~ 12 minutes
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
