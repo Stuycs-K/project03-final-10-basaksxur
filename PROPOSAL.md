@@ -17,14 +17,14 @@ First, the server should be running, then the clients can each log in with their
 
 A description of your technical design. This should include:
    
-In order to store and display user data, we will write and read from text files. To have the server connect to different clients, we will have forking subservers. The server and clients will communicate through named pipes. We will use signal handlers to deal with certain client actions; for example, if a client exits in the middle of the match, they will automatically lose.
+In order to store and display user data, we will write and read from files. To have the server connect to different clients, we will have forking subservers. The server and clients will communicate through named pipes. We will use signal handlers to deal with certain client actions; for example, if a client exits in the middle of the match, they will automatically lose.
      
-How you are breaking down the project and who is responsible for which parts.
-  
-What data structures you will be using and how.
-     
-What algorithms and /or data structures you will be using, and how.
+We'll start with client (Ray)/server (Souvik) handshake and setting up basic communication. Then we'll implement client-to-client via server communication (Souvik) and install initial RPS game (Ray). Then we'll add additional features like storing information to files (Souvik) and adding abilities (Ray).
+       
+Structs may be employed to handle the storing of data easily.
     
 # Intended pacing:
 
-A timeline with expected completion dates of parts of the project.
+Jan 9 - Client to client via server communication established.
+Jan 13 - Rock paper scissors game implemented.
+Jan 17 - Additional features implemented.
