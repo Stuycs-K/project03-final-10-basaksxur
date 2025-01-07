@@ -59,8 +59,18 @@ int main(){
                 if (*playercount==1) {
                     printf("Client 1 connected, waiting on second client to start...\n");
                 }
+                else if (*playercount>2) {
+                    printerror();
+                }
+                else {
+                    char userinput[100];
+                    printf("Enter rock, paper, or scissor: ");
+                    fflush(stdout);
+                    fgets(userinput, sizeof(userinput), stdin);
+                    printf("You entered: %s\n", userinput);
+                }
             }
-            printf("%d\n", x);
+            //printf("%d\n", x);
             close(to_client);
             exit(0);
         }
