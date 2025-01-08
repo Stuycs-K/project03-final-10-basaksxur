@@ -24,10 +24,18 @@ int main(){
     signal(SIGINT, sighandler);
     signal(SIGPIPE, sighandler);
     from_server = client_handshake( &to_server );
-    int random;
-    while (read(from_server, &random, sizeof(int))) {
-//        printf("Random number: %d\n", random);
-    }
+    printf("Welcome to Rock Paper Scissors! Connected to server, waiting to match against another client...\n");
+    //wait for other client to connect
+    char lineBuffer[100];
+    printf("Enter rock, paper, or scissors (r, p, s): ");
+    fflush(stdout);
+    fgets(lineBuffer, sizeof(lineBuffer), stdin);
+    printf("You entered: %s\n", lineBuffer);
+    write(to_server, lineBuffer, sizeof(lineBuffer));
+
+    read(from_server, lineBuffer, sizeof(lineBuffer)); // result
+
+
     close(to_server);
     close(from_server);
 }
