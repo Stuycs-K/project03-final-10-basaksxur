@@ -26,15 +26,16 @@ int main(){
     from_server = client_handshake( &to_server );
     printf("Welcome to Rock Paper Scissors! Connected to server, waiting to match against another client...\n");
     //wait for other client to connect
-    char lineBuffer[100];
-    printf("Enter rock, paper, or scissors (r, p, s): ");
-    fflush(stdout);
-    fgets(lineBuffer, sizeof(lineBuffer), stdin);
-    printf("You entered: %s\n", lineBuffer);
-    write(to_server, lineBuffer, sizeof(lineBuffer));
-
-    read(from_server, lineBuffer, sizeof(lineBuffer)); // result
-
+    for (int i = 0; i < 3; i++) {
+        char lineBuffer[100];
+        printf("Enter rock, paper, or scissors (r, p, s): ");
+        fflush(stdout);
+        fgets(lineBuffer, sizeof(lineBuffer), stdin);
+        printf("You entered: %s\n", lineBuffer);
+        write(to_server, lineBuffer, sizeof(lineBuffer));
+        read(from_server, lineBuffer, sizeof(lineBuffer)); // result
+        printf("%s\n", lineBuffer);
+    }
 
     close(to_server);
     close(from_server);
