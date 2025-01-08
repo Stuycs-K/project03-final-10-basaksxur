@@ -18,6 +18,16 @@ int to_client2 = -1;
 int from_client2 = -1;
 int connected = 0;
 
+struct SharedMemory {
+    char input1[100];
+    char input2[100];
+    int connectedready1;
+    int connectedready2;
+    int moveready1;
+    int moveready2;
+    char result[200];
+};
+
 static void sighandler(int signo) {
     if (signo == SIGINT) {
         if (to_client1 != -1) {
@@ -33,9 +43,11 @@ static void sighandler(int signo) {
             close(from_client2);
         }
         unlink(WKP);
+        printf("A client has disconnected. The game is exiting...\n");
         exit(0);
     } else if (signo == SIGPIPE) {
-        connected = 0;
+        connectedready1 = 0;
+        connectedready2 = 0;
     }
 }
 
@@ -52,31 +64,23 @@ int main(){
     connected = 1;
     pid_t pid1 = fork();
     int shmd;
-    int *playercount; //WE SHOULD MAKE A SHARED MEMORY STRUCT TO STORE ALL INPUTS
-    shmd = shmget(KEY, sizeof(int), IPC_CREAT | 0600);
+    SharedMemory * database; //WE SHOULD MAKE A SHARED MEMORY STRUCT TO STORE ALL INPUTS
+    shmd = shmget(KEY, sizeof(SharedMemory), IPC_CREAT | 0600);
     if (shmd == -1) {
         printerror();
     }
-    playercount = (int *) shmat(shmid, 0, 0);
-    if (playercount == (int *) -1) {
+    database = (SharedMemory *) shmat(shmid, 0, 0);
+    if (database == (SharedMemory *) -1) {
         printerror();
     }
-    *playercount = 0;
+    memset(database, 0, sizeof(SharedMemory));
     //printf("shmd: %d\n", shmd);
     pid_t pid1 = fork();
     if (pid1 == 0) {
         to_client1 = server_handshake_half(&to_client, from_client);
-        while (connected) {
+        connectedready1 = 1;
+        while (connectedready2) {
             
-            /*
-            char userinput[100];
-            printf("Enter rock, paper, or scissor: ");
-            fflush(stdout);
-            fgets(userinput, sizeof(userinput), stdin);
-            printf("You entered: %s\n", userinput);
-            */
-
-            //ABOVE NEEDS TO BE IMPLEMENTED ON CLIENT SIDE, NOT SERVER.
         
         }
         close(to_client1);
@@ -84,17 +88,10 @@ int main(){
     }
     if (pid2 == 0) {
         to_client2 = server_handshake_half(&to_client, from_client);
-        while (connected) {
+        connectedready2 = 1;
+        while (connectedready1) {
             
-            /*
-            char userinput[100];
-            printf("Enter rock, paper, or scissor: ");
-            fflush(stdout);
-            fgets(userinput, sizeof(userinput), stdin);
-            printf("You entered: %s\n", userinput);
-            */
-
-            //ABOVE NEEDS TO BE IMPLEMENTED ON CLIENT SIDE, NOT SERVER.
+            
         
         }
         close(to_client2);
