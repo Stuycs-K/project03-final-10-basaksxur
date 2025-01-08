@@ -108,8 +108,22 @@ int main(){
         database->connectedready2 = 1;
         while (1){
             while (database->connectedready1) {
+                char userinput[100];
+                printf("Waiting for Client 2's input...\n");
+                read(from_client2, userinput, sizeof(userinput));
+                userinput[strlen(userinput)-1] = '\0';
+                strcpy(database->input2, userinput);
+                database->moveready2 = 1;
 
-
+                while (!database->moveready1) {
+                    sleep(1);
+                }
+                //i dont know how much time elapses between server receiving both moves and 
+                //deciding the result...so might need to put a sleep() here as a buffer
+                write(to_client2, database->result, strlen(database->result));
+                database->moveready1 = 0;
+                database->moveready2 = 0; 
+                
             }
         }
         close(to_client2);
