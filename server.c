@@ -46,8 +46,8 @@ static void sighandler(int signo) {
         printf("A client has disconnected. The game is exiting...\n");
         exit(0);
     } else if (signo == SIGPIPE) {
-        connectedready1 = 0;
-        connectedready2 = 0;
+        database->connectedready1 = 0;
+        database->connectedready2 = 0;
     }
 }
 
@@ -64,7 +64,7 @@ int main(){
     connected = 1;
     pid_t pid1 = fork();
     int shmd;
-    SharedMemory * database; //WE SHOULD MAKE A SHARED MEMORY STRUCT TO STORE ALL INPUTS
+    struct SharedMemory * database; 
     shmd = shmget(KEY, sizeof(SharedMemory), IPC_CREAT | 0600);
     if (shmd == -1) {
         printerror();
@@ -74,25 +74,40 @@ int main(){
         printerror();
     }
     memset(database, 0, sizeof(SharedMemory));
-    //printf("shmd: %d\n", shmd);
     pid_t pid1 = fork();
     if (pid1 == 0) {
         to_client1 = server_handshake_half(&to_client, from_client);
-        connectedready1 = 1;
-        while (connectedready2) {
-            
-        
+        database->connectedready1 = 1;
+        while (1) {
+            while (database->connectedready2) {
+                char userinput[100];
+                printf("Waiting for Client 1's input...\n");
+                read(from_client1, userinput, sizeof(userinput));
+                userinput[strlen(userinput)-1] = '\0';
+                strcpy(database->input1, userinput);
+                database->moveready1 = 1;
+
+                while (!database->moveready2) {
+                    sleep(1);
+                }
+                //i dont know how much time elapses between server receiving both moves and 
+                //deciding the result...so might need to put a sleep() here as a buffer
+                write(to_client1, database->result, strlen(database->result));
+                database->moveready1 = 0;
+                database->moveready2 = 0; 
+            }
         }
         close(to_client1);
         exit(0);
     }
     if (pid2 == 0) {
         to_client2 = server_handshake_half(&to_client, from_client);
-        connectedready2 = 1;
-        while (connectedready1) {
-            
-            
-        
+        database->connectedready2 = 1;
+        while (1){
+            while (database->connectedready1) {
+                
+
+            }
         }
         close(to_client2);
         exit(0);
