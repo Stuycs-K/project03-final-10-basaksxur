@@ -46,9 +46,12 @@ static void sighandler(int signo) {
         printf("A client has disconnected. The game is exiting...\n");
         exit(0);
     } else if (signo == SIGPIPE) {
+      /*
         database->connectedready1 = 0;
         database->connectedready2 = 0;
-    }
+        */
+        //database is not declared here, so can we remove this?
+  }
 }
 
 int main(){
@@ -62,21 +65,20 @@ int main(){
     from_client2 = server_setup();
     printf("Client 2 found. Both clients connected.\n");
     connected = 1;
-    pid_t pid1 = fork();
     int shmd;
-    struct SharedMemory * database; 
+    struct SharedMemory * database;
     shmd = shmget(KEY, sizeof(SharedMemory), IPC_CREAT | 0600);
     if (shmd == -1) {
         printerror();
     }
-    database = (SharedMemory *) shmat(shmid, 0, 0);
+    database = (SharedMemory *) shmat(shmd, 0, 0);
     if (database == (SharedMemory *) -1) {
         printerror();
     }
     memset(database, 0, sizeof(SharedMemory));
     pid_t pid1 = fork();
     if (pid1 == 0) {
-        to_client1 = server_handshake_half(&to_client, from_client);
+        to_client1 = server_handshake_half(&to_client1, from_client1);
         database->connectedready1 = 1;
         while (1) {
             while (database->connectedready2) {
@@ -90,22 +92,23 @@ int main(){
                 while (!database->moveready2) {
                     sleep(1);
                 }
-                //i dont know how much time elapses between server receiving both moves and 
+                //i dont know how much time elapses between server receiving both moves and
                 //deciding the result...so might need to put a sleep() here as a buffer
                 write(to_client1, database->result, strlen(database->result));
                 database->moveready1 = 0;
-                database->moveready2 = 0; 
+                database->moveready2 = 0;
             }
         }
         close(to_client1);
         exit(0);
     }
+    pid_t pid2 = fork();
     if (pid2 == 0) {
-        to_client2 = server_handshake_half(&to_client, from_client);
+        to_client2 = server_handshake_half(&to_client2, from_client2);
         database->connectedready2 = 1;
         while (1){
             while (database->connectedready1) {
-                
+
 
             }
         }
@@ -116,8 +119,8 @@ int main(){
         //game logic
     }
 
-    shmdt(shm);
-    shmctl(shmid, IPC_RMID, NULL);
+    shmdt(database);
+    shmctl(shmd, IPC_RMID, NULL);
     close(from_client1);
     close(from_client2);
 }
