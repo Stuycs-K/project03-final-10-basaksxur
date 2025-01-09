@@ -22,12 +22,19 @@ int main() {
     //greetings to user
     //user login/create account? ("accounts" would just be sign in with username)
     //le game
-    char inputBuffer[10];
     for (int i = 0; i < 3; i++) {
+        char inputBuffer[10];
         read(from_server, inputBuffer, 1); //server stalls client
+        printf("Round %d...\n", i);
         printf("Enter rock, paper, or scissors: ");
+        fflush(stdout);
         fgets(inputBuffer, sizeof(inputBuffer), stdin);
         write(to_server, inputBuffer, sizeof(inputBuffer));
+
+        char receivedBuffer[100];
+        read(from_server, receivedBuffer, sizeof(receivedBuffer));
+        printf("%s\n"receivedBuffer);
+    
     }
     close(to_server);
     close(from_server);
