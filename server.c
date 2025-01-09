@@ -39,16 +39,22 @@ int main() {
             //game logic, can communicate with 2 clients
             to_client1 = server_handshake_half(&to_client1, from_client1);
             to_client2 = server_handshake_half(&to_client2, from_client2);
-            char client1Input[10];
-            char client2Input[10];
+
             for (int i = 0; i < 3; i++) {
+                char client1Input[10];
+                char client2Input[10];
                 //stop stalling clients
                 write(to_client1, "e", 1);
                 write(to_client2, "e", 1);
 
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
+                //remove \n
+                client1Input[strlen(client1Input)-1] = 0;
+                client2Input[strlen(client2Input)-1] = 0;
                 printf("Client 1 played %s, client 2 played %s\n", client1Input, client2Input);
+
+                
             }
             close(from_client1);
             close(from_client2);
