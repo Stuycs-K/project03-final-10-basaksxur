@@ -27,7 +27,6 @@ static void sighandler(int signo) {
 int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
-    signal(SIGPIPE, sighandler);
     while (1) {
         printf("Looking for client 1\n");
         from_client1 = server_setup();
@@ -43,7 +42,7 @@ int main() {
             char client1Input[10];
             char client2Input[10];
             for (int i = 0; i < 3; i++) {
-                //stop stalling client
+                //stop stalling clients
                 write(to_client1, "e", 1);
                 write(to_client2, "e", 1);
 
