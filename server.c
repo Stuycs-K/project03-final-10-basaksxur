@@ -101,8 +101,8 @@ int main() {
                     }
                 }
 
-                write(to_client1, resultbuff, strlen(resultbuff));
-                write(to_client2, resultbuff, strlen(resultbuff));
+                write(to_client1, resultbuff, strlen(resultbuff)+1);
+                write(to_client2, resultbuff, strlen(resultbuff)+1);
             }
             close(to_client1);
             close(from_client1);
