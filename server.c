@@ -49,6 +49,24 @@ int main() {
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
                 printf("Client 1 played %s, client 2 played %s\n", client1Input, client2Input);
+
+                if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
+                    client1Input[strlen(client1Input) - 1] = '\0';
+                }
+                if (client2Input[strlen(client2Input) - 1] == '\n') { //to make comparison smoother
+                    client2Input[strlen(client2Input) - 1] = '\0';
+                }
+
+                if (!strcmp(client1Input, client2Input)) {
+                    char resultbuff[100];
+                    sprintf(resultbuff, "Both clients chose %s. Round not counted.", client1Input);
+                    write(to_client1, resultbuff, strlen(resultbuff));
+                    write(to_client2, resultbuff, strlen(resultbuff));
+                }
+
+                if ()
+                char loserbuff[100];
+                sprintf(loserbuff, "Client %d ", age, height);
             }
             close(from_client1);
             close(from_client2);
