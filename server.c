@@ -44,9 +44,9 @@ int main() {
             for (int i = 0; i < 3; i++) {
                 //stop stalling clients
                 printf("New round\n"); //DEBUG
-                write(to_client1, "a", 1);
-                write(to_client2, "a", 1);
-                printf("got past write\n"); //DEBUG
+                //write(to_client1, "a", 1);
+                //write(to_client2, "a", 1);
+                //printf("got past write\n"); //DEBUG
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
                 printf("got past read inputs\n"); //DEBUG
@@ -104,10 +104,10 @@ int main() {
                 write(to_client1, resultbuff, strlen(resultbuff));
                 write(to_client2, resultbuff, strlen(resultbuff));
             }
-            close(from_client1);
-            close(from_client2);
             close(to_client1);
+            close(from_client1);
             close(to_client2);
+            close(from_client2);
             exit(0);
         }
     }
