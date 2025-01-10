@@ -43,12 +43,13 @@ int main() {
             char client2Input[10];
             for (int i = 0; i < 3; i++) {
                 //stop stalling clients
-                write(to_client1, "e", 1);
-                write(to_client2, "e", 1);
-
+                printf("New round\n"); //DEBUG
+                write(to_client1, "a", 1);
+                write(to_client2, "a", 1);
+                printf("got past write\n"); //DEBUG
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
-                
+                printf("got past read inputs\n"); //DEBUG
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
                 }
@@ -56,7 +57,7 @@ int main() {
                     client2Input[strlen(client2Input) - 1] = '\0';
                 }
 
-                printf("Client 1 played %s, client 2 played %s\n", client1Input, client2Input);
+                printf("Client 1 played %s, client 2 played %s.\n", client1Input, client2Input);
                 char resultbuff[100];
                 if (!strcmp(client1Input, client2Input)) {
                     sprintf(resultbuff, "Both clients chose %s. Round skipped.\n", client1Input);
