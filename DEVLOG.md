@@ -13,6 +13,9 @@ Created forking server with two explicit clients, set up shared memory logic and
 ### 2024-01-08 - Added subserver features
 Updated shared memory logic to facilitate server processing. Added code to subservers. ~ 35 minutes
 
+### 2024-01-09 - Finished server logic
+Added basic server logic for comparing moves/inputs from two clients. Also finished basic server-client read/write exchange. ~ 30 minutes
+
 ## Souvik Basak
 
 ### 2024-01-06 - Setup stuff
