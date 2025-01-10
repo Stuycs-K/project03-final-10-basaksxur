@@ -23,17 +23,18 @@ int main() {
     //user login/create account? ("accounts" would just be sign in with username)
     //le game
     for (int i = 0; i < 3; i++) {
-        char inputBuffer[10];
-        read(from_server, inputBuffer, 1); //server stalls client
-        printf("Round %d...\n", i);
+        char connectBuffer[10];
+        read(from_server, connectBuffer, 1); //server stalls client
+        printf("Round %d...\n", i+1);
         printf("Enter rock, paper, or scissors (lowercase): "); //we can add a toupper/tolower later if possible
         fflush(stdout);
+        char inputBuffer[10];
         fgets(inputBuffer, sizeof(inputBuffer), stdin);
         write(to_server, inputBuffer, sizeof(inputBuffer));
 
         char receivedBuffer[100];
         read(from_server, receivedBuffer, sizeof(receivedBuffer));
-        printf("%s\n"receivedBuffer);
+        printf("%s\n",receivedBuffer);
     
     }
     close(to_server);
