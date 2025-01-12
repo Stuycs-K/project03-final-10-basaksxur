@@ -26,6 +26,28 @@ struct user *loadUser(char *username, int dataFile) {
     return NULL;
 }
 
+void updateStats(struct user *player, int won) {
+    player->gamesPlayed++;
+    if (won) {
+        player->rating += 20;
+        player->gamesWon++;
+    } else {
+        player->rating -= 20;
+        player->gamesLost++;
+    }
+    if (player->rating <= 60) {
+        strcpy(player->rank, "Plastic");
+    } else if (player->rating <= 140) {
+        strcpy(player->rank, "Silver");
+    } else if (player->rating <= 200) {
+        strcpy(player->rank, "Gold");
+    } else if (player->rating <= 270) {
+        strcpy(player->rank, "Platinum");
+    } else {
+        strcpy(player->rank, "Diamond");
+    }
+}
+
 void printUser(struct user *player) {
     printf("Username: %s\nRating: %d\nRank: %s\n", player->username, player->rating, player->rank);
 }
