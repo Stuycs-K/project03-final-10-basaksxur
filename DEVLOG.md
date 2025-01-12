@@ -16,6 +16,9 @@ Updated shared memory logic to facilitate server processing. Added code to subse
 ### 2025-01-09 - Finished server logic
 Added basic server logic for comparing moves/inputs from two clients. Also finished basic server-client read/write exchange. ~ 30 minutes
 
+### 2025-01-10 - Finished basic game.
+Finished server-client exchange and tested the basic game. Verified logic of comparing client responses. ~ 35 minutes
+
 ## Souvik Basak
 
 ### 2025-01-06 - Setup stuff
