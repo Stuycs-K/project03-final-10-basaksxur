@@ -1,14 +1,14 @@
 #include "server_util.h"
 
-struct user *createUser(char username[], int rating, int gamesPlayed, int gamesWon, int gamesLost, char rank[], int connected) {
+struct user *createUser(char username[]) {
     struct user *newUser = malloc(sizeof(struct user));
     strcpy(newUser->username, username);
-    newUser->rating = rating;
-    newUser->gamesPlayed = gamesPlayed;
-    newUser->gamesWon = gamesWon;
-    newUser->gamesLost = gamesLost;
-    strcpy(newUser->rank, rank);
-    newUser->connected = connected;
+    newUser->rating = 100;
+    newUser->gamesPlayed = 0;
+    newUser->gamesWon = 0;
+    newUser->gamesLost = 0;
+    strcpy(newUser->rank, "Silver");
+    newUser->connected = 0;
     return newUser;
 }
 
