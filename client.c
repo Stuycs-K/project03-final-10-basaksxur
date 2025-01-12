@@ -1,4 +1,6 @@
 #include "networking.h"
+#include "server_util.h"
+
 
 int to_server = -1;
 int from_server = -1;
@@ -22,6 +24,19 @@ int main() {
     //greetings to user
     //user login/create account? ("accounts" would just be sign in with username)
     //le game
+        char usernameBuff[10];
+        printf("Enter username (case sensitive): ");
+        fflush(stdout);
+        fgets(usernameBuff, sizeof(usernameBuff), stdin);
+        if (loadUser(usernameBuff, ??)) {
+            printf("Welcome back %s. Your progress has been loaded and will be saved.\n", usernameBuff);
+        }
+        else {
+            createUser(usernameBuff, ??);
+            printf("Hello %s. Your new profile has been created and progress will be saved.\n", usernameBuff);
+        }
+
+    if ()
     for (int i = 0; i < 3; i++) {
         char connectBuffer[10];
         //sleep(1);
