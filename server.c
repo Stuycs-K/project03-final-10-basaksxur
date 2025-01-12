@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "server_util.h"
 
 int to_client1 = -1;
 int from_client1 = -1;
@@ -28,6 +29,7 @@ int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
     while (1) {
+        //open userstats file in readwrite
         printf("Looking for client 1\n");
         from_client1 = server_setup();
         printf("Client 1 found\n");
@@ -42,10 +44,7 @@ int main() {
             char client1Input[10];
             char client2Input[10];
             for (int i = 0; i < 3; i++) {
-                //stop stalling clients
                 printf("New round\n"); //DEBUG
-                //write(to_client1, "a", 1);
-                //write(to_client2, "a", 1);
                 //printf("got past write\n"); //DEBUG
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
