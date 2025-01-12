@@ -38,17 +38,44 @@ int main() {
         printf("Client 2 found\n");
 
         if (fork() == 0) {
+            int score1 = 0;
+            int score2 = 0;
             //game logic, can communicate with 2 clients
             to_client1 = server_handshake_half(&to_client1, from_client1);
             to_client2 = server_handshake_half(&to_client2, from_client2);
-            char client1Input[10];
-            char client2Input[10];
+
+            char client1User[100];
+            char client2User[100];
+            read(from_client1, client1User, sizeof(client1User));
+            read(from_client2, client2User, sizeof(client2User));
+            //USER 1
+            char client1UserConf[200];
+            if (loadUser(client1User)) {
+                sprintf(client1UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client1User);
+            }
+            else {
+                createUser(client1User);
+                sprintf(client1UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client1User);
+            }
+            write(to_client1, client1UserConf, strlen(client1UserConf)+1);
+            //USER 2
+            char client2UserConf[200];
+            if (loadUser(client2User)) {
+                sprintf(client2UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client2User);
+            }
+            else {
+                createUser(client2User);
+                sprintf(client2UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client2User);
+            }
+            write(to_client2, client2UserConf, strlen(client2UserConf)+1);
             for (int i = 0; i < 3; i++) {
+                char client1Input[10];
+                char client2Input[10];
                 printf("New round\n"); //DEBUG
                 //printf("got past write\n"); //DEBUG
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
-                printf("got past read inputs\n"); //DEBUG
+                //printf("got past read inputs\n"); //DEBUG
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
                 }
@@ -64,9 +91,11 @@ int main() {
                 else {
                     if (!strcmp(client1Input, "rock")) {
                         if (!strcmp(client2Input, "paper")) { //client 2 wins
+                            score2++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
                         }
                         else if (!strcmp(client2Input, "scissors")) { //client 1 wins
+                            score1++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
                         }
                         else {
@@ -75,9 +104,11 @@ int main() {
                     }
                     else if (!strcmp(client1Input, "paper")) {
                         if (!strcmp(client2Input, "rock")) { //client 1 wins
+                            score1++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
                         }
                         else if (!strcmp(client2Input, "scissors")) { //client 2 wins
+                            score2++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
                         }
                         else {
@@ -86,9 +117,11 @@ int main() {
                     }
                     else if (!strcmp(client1Input, "scissors")) {
                         if (!strcmp(client2Input, "paper")) { //client 1 wins
+                            score1++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
                         }
                         else if (!strcmp(client2Input, "rock")) { //client 2 wins
+                            score2++;
                             sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
                         }
                         else {
@@ -102,6 +135,24 @@ int main() {
 
                 write(to_client1, resultbuff, strlen(resultbuff)+1);
                 write(to_client2, resultbuff, strlen(resultbuff)+1);
+            }
+            char winbuff[100];
+            sprintf(winbuff, "You win.\n");
+            char losebuff[100];
+            sprintf(losebuff, "You lose.\n");
+            if (score1>score2) { //Client 1 wins
+                write(to_client1, winbuff, strlen(winbuff)+1);
+                write(to_client2, losebuff, strlen(losebuff)+1);
+            }
+            else if (score2>score1) { //Client 2 wins
+                write(to_client1, losebuff, strlen(losebuff)+1);
+                write(to_client2, winbuff, strlen(winbuff)+1);
+            }
+            else { //neither wins
+                char neitherbuff[100];
+                sprintf(neitherbuff, "Neither player won.\n");
+                write(to_client1, neitherbuff, strlen(neitherbuff)+1);
+                write(to_client2, neitherbuff, strlen(neitherbuff)+1);
             }
             close(to_client1);
             close(from_client1);

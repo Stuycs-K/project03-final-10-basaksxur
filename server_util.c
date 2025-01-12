@@ -1,7 +1,9 @@
 #include "server_util.h"
 
+int dataFile = 1209290471;
+
 //return new user and write it into userdata file
-struct user *createUser(char username[], int dataFile) {
+struct user *createUser(char username[]) {
     struct user *newUser = malloc(sizeof(struct user));
     strcpy(newUser->username, username);
     newUser->rating = 100;
@@ -15,7 +17,7 @@ struct user *createUser(char username[], int dataFile) {
 }
 
 //returns a user specified by username, if the user doesn't exist returns NULL
-struct user *loadUser(char *username, int dataFile) {
+struct user *loadUser(char *username) {
     struct user *output = malloc(sizeof(struct user));
     lseek(dataFile, 0, SEEK_SET);
     while (read(dataFile, output, sizeof(struct user))) {
