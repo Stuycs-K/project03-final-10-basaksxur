@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 struct user {
     char username[20];
     int rating;
@@ -13,4 +14,5 @@ struct user {
     int connected;
 };
 struct user *loadUser(char *username, int dataFile);
+void printUser(struct user *player);
 #endif
