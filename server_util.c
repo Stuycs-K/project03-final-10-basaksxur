@@ -15,3 +15,7 @@ struct user *loadUser(char *username, int dataFile) {
     }
     return NULL;
 }
+
+void printUser(struct user *player) {
+    printf("Username: %s\nRating: %d\nRank: %s\n", player->username, player->rating, player->rank);
+}
