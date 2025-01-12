@@ -1,6 +1,7 @@
 #include "server_util.h"
 
-struct user *createUser(char username[]) {
+//return new user and write it into userdata file
+struct user *createUser(char username[], int dataFile) {
     struct user *newUser = malloc(sizeof(struct user));
     strcpy(newUser->username, username);
     newUser->rating = 100;
@@ -9,6 +10,7 @@ struct user *createUser(char username[]) {
     newUser->gamesLost = 0;
     strcpy(newUser->rank, "Silver");
     newUser->connected = 0;
+    write(dataFile, newUser, sizeof(struct user));
     return newUser;
 }
 

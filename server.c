@@ -29,7 +29,7 @@ int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
     while (1) {
-        //open userstats file in readwrite
+        int dataFile = open("userdata.dat", O_RDWR, 0);
         printf("Looking for client 1\n");
         from_client1 = server_setup();
         printf("Client 1 found\n");
