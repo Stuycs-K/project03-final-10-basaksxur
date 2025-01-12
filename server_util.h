@@ -14,7 +14,7 @@ struct user {
     char rank[10];
     int connected;
 };
-struct user *createUser(char username[], int rating, int gamesPlayed, int gamesWon, int gamesLost, char rank[], int connected);
+struct user *createUser(char username[]);
 struct user *loadUser(char *username, int dataFile);
 void printUser(struct user *player);
 #endif
