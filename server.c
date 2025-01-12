@@ -39,27 +39,75 @@ int main() {
             //game logic, can communicate with 2 clients
             to_client1 = server_handshake_half(&to_client1, from_client1);
             to_client2 = server_handshake_half(&to_client2, from_client2);
-
+            char client1Input[10];
+            char client2Input[10];
             for (int i = 0; i < 3; i++) {
-                char client1Input[10];
-                char client2Input[10];
                 //stop stalling clients
-                write(to_client1, "e", 1);
-                write(to_client2, "e", 1);
-
+                printf("New round\n"); //DEBUG
+                //write(to_client1, "a", 1);
+                //write(to_client2, "a", 1);
+                //printf("got past write\n"); //DEBUG
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
-                //remove \n
-                client1Input[strlen(client1Input)-1] = 0;
-                client2Input[strlen(client2Input)-1] = 0;
-                printf("Client 1 played %s, client 2 played %s\n", client1Input, client2Input);
+                printf("got past read inputs\n"); //DEBUG
+                if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
+                    client1Input[strlen(client1Input) - 1] = '\0';
+                }
+                if (client2Input[strlen(client2Input) - 1] == '\n') { //to make comparison smoother
+                    client2Input[strlen(client2Input) - 1] = '\0';
+                }
 
-                
+                printf("Client 1 played %s, client 2 played %s.\n", client1Input, client2Input);
+                char resultbuff[100];
+                if (!strcmp(client1Input, client2Input)) {
+                    sprintf(resultbuff, "Both clients chose %s. Round skipped.\n", client1Input);
+                }
+                else {
+                    if (!strcmp(client1Input, "rock")) {
+                        if (!strcmp(client2Input, "paper")) { //client 2 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
+                        }
+                        else if (!strcmp(client2Input, "scissors")) { //client 1 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
+                        }
+                        else {
+                            sprintf(resultbuff, "Client 2 chose an illegal move: %s. Round skipped.\n", client2Input);
+                        }
+                    }
+                    else if (!strcmp(client1Input, "paper")) {
+                        if (!strcmp(client2Input, "rock")) { //client 1 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
+                        }
+                        else if (!strcmp(client2Input, "scissors")) { //client 2 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
+                        }
+                        else {
+                            sprintf(resultbuff, "Client 2 chose an illegal move: %s. Round skipped.\n", client2Input);
+                        }
+                    }
+                    else if (!strcmp(client1Input, "scissors")) {
+                        if (!strcmp(client2Input, "paper")) { //client 1 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 1 wins.\n", client1Input, client2Input);
+                        }
+                        else if (!strcmp(client2Input, "rock")) { //client 2 wins
+                            sprintf(resultbuff, "Client 1 chose %s. Client 2 chose %s. Client 2 wins.\n", client1Input, client2Input);
+                        }
+                        else {
+                            sprintf(resultbuff, "Client 2 chose an illegal move: %s. Round skipped.\n", client2Input);
+                        }
+                    }
+                    else {
+                        sprintf(resultbuff, "Client 1 chose an illegal move: %s. Round skipped.\n", client1Input);
+                    }
+                }
+
+                write(to_client1, resultbuff, strlen(resultbuff)+1);
+                write(to_client2, resultbuff, strlen(resultbuff)+1);
             }
-            close(from_client1);
-            close(from_client2);
             close(to_client1);
+            close(from_client1);
             close(to_client2);
+            close(from_client2);
             exit(0);
         }
     }
