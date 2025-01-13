@@ -52,7 +52,7 @@ int main() {
             read(from_client2, client2User, sizeof(client2User));
             //USER 1
             char client1UserConf[200];
-            if (client1 = loadUser(client1User, dataFile)) {
+            if ((client1 = loadUser(client1User, dataFile))) {
                 sprintf(client1UserConf, "Welcome back %s\n", printUser(client1));
             }
             else {
@@ -62,7 +62,7 @@ int main() {
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             //USER 2
             char client2UserConf[200];
-            if (client2 = loadUser(client2User, dataFile)) {
+            if ((client2 = loadUser(client2User, dataFile))) {
                 sprintf(client2UserConf, "Welcome back %s\n", printUser(client2));
             }
             else {
@@ -86,7 +86,7 @@ int main() {
                 }
 
                 printf("Client 1 played %s, client 2 played %s.\n", client1Input, client2Input);
-                char resultbuff[100];
+                char resultbuff[200];
                 if (!strcmp(client1Input, client2Input)) {
                     sprintf(resultbuff, "Both clients chose %s. Round skipped.\n", client1Input);
                 }
@@ -138,9 +138,9 @@ int main() {
                 write(to_client1, resultbuff, strlen(resultbuff)+1);
                 write(to_client2, resultbuff, strlen(resultbuff)+1);
             }
-            char winbuff[100];
+            char winbuff[30];
             sprintf(winbuff, "You win.\n");
-            char losebuff[100];
+            char losebuff[30];
             sprintf(losebuff, "You lose.\n");
             if (score1>score2) { //Client 1 wins
                 write(to_client1, winbuff, strlen(winbuff)+1);
@@ -155,7 +155,7 @@ int main() {
                 updateStats(client1, 0);
             }
             else { //neither wins
-                char neitherbuff[100];
+                char neitherbuff[30];
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
