@@ -28,8 +28,8 @@ static void sighandler(int signo) {
 int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
+    int dataFile = open("userdata.dat", O_RDWR, 0);
     while (1) {
-        int dataFile = open("userdata.dat", O_RDWR, 0);
         printf("Looking for client 1\n");
         from_client1 = server_setup();
         printf("Client 1 found\n");
@@ -50,21 +50,21 @@ int main() {
             read(from_client2, client2User, sizeof(client2User));
             //USER 1
             char client1UserConf[200];
-            if (loadUser(client1User)) {
+            if (loadUser(client1User, dataFile)) {
                 sprintf(client1UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client1User);
             }
             else {
-                createUser(client1User);
+                createUser(client1User, dataFile);
                 sprintf(client1UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client1User);
             }
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             //USER 2
             char client2UserConf[200];
-            if (loadUser(client2User)) {
+            if (loadUser(client2User, dataFile)) {
                 sprintf(client2UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client2User);
             }
             else {
-                createUser(client2User);
+                createUser(client2User, dataFile);
                 sprintf(client2UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client2User);
             }
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
