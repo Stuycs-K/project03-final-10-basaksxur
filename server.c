@@ -53,21 +53,21 @@ int main() {
             //USER 1
             char client1UserConf[200];
             if (client1 = loadUser(client1User, dataFile)) {
-                sprintf(client1UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client1User);
+                sprintf(client1UserConf, "Welcome back %s\n", printUser(client1));
             }
             else {
                 client1 = createUser(client1User, dataFile);
-                sprintf(client1UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client1User);
+                sprintf(client1UserConf, "Your new profile has been created:%s\n", printUser(client1));
             }
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             //USER 2
             char client2UserConf[200];
             if (client2 = loadUser(client2User, dataFile)) {
-                sprintf(client2UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client2User);
+                sprintf(client2UserConf, "Welcome back %s\n", printUser(client2));
             }
             else {
                 client2 = createUser(client2User, dataFile);
-                sprintf(client2UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client2User);
+                sprintf(client2UserConf, "Your new profile has been created:%s\n", printUser(client2));
             }
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
             for (int i = 0; i < 3; i++) {
