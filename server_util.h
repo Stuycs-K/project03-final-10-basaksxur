@@ -17,6 +17,6 @@ struct user {
 struct user *createUser(char username[], int dataFile);
 struct user *loadUser(char *username, int dataFile);
 void updateStats(struct user *player, int won);
-void printUser(struct user *player);
+char *printUser(struct user *player);
 void printAllUsers(int dataFile);
 #endif
