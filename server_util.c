@@ -49,5 +49,13 @@ void updateStats(struct user *player, int won) {
 }
 
 void printUser(struct user *player) {
-    printf("Username: %s\nRating: %d\nRank: %s\n", player->username, player->rating, player->rank);
+    printf("Username: %s\nRating: %d\nRank: %s\nGames played: %d\nGames Won: %d\nGames Lost: %d\n", player->username, player->rating, player->rank, player->gamesPlayed, player->gamesWon, player->gamesLost);
+}
+
+void printAllUsers(int dataFile) {
+  struct user *player = malloc(sizeof(struct user));
+  lseek(dataFile, 0, SEEK_SET);
+  while (read(dataFile, player, sizeof(struct user))) {
+    printUser(player);
+  }
 }
