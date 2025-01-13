@@ -29,8 +29,6 @@ int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
     int dataFile = open("userdata.dat", O_RDWR, 0);
-    printAllUsers(dataFile);
-    return 0;
     while (1) {
         printf("Looking for client 1\n");
         from_client1 = server_setup();
