@@ -46,25 +46,27 @@ int main() {
 
             char client1User[100];
             char client2User[100];
+            struct user * client1;
+            struct user * client2;
             read(from_client1, client1User, sizeof(client1User));
             read(from_client2, client2User, sizeof(client2User));
             //USER 1
             char client1UserConf[200];
-            if (loadUser(client1User, dataFile)) {
+            if (client1 = loadUser(client1User, dataFile)) {
                 sprintf(client1UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client1User);
             }
             else {
-                createUser(client1User, dataFile);
+                client1 = createUser(client1User, dataFile);
                 sprintf(client1UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client1User);
             }
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             //USER 2
             char client2UserConf[200];
-            if (loadUser(client2User, dataFile)) {
+            if (client2 = loadUser(client2User, dataFile)) {
                 sprintf(client2UserConf, "Welcome back %s. Your progress has been loaded and will be saved.\n", client2User);
             }
             else {
-                createUser(client2User, dataFile);
+                client2 = createUser(client2User, dataFile);
                 sprintf(client2UserConf, "Hello %s. Your new profile has been created and progress will be saved.\n", client2User);
             }
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
@@ -143,16 +145,22 @@ int main() {
             if (score1>score2) { //Client 1 wins
                 write(to_client1, winbuff, strlen(winbuff)+1);
                 write(to_client2, losebuff, strlen(losebuff)+1);
+                updateStats(client1, 1);
+                updateStats(client2, 0);
             }
             else if (score2>score1) { //Client 2 wins
                 write(to_client1, losebuff, strlen(losebuff)+1);
                 write(to_client2, winbuff, strlen(winbuff)+1);
+                updateStats(client2, 1);
+                updateStats(client1, 0);
             }
             else { //neither wins
                 char neitherbuff[100];
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
+                updateStats(client2, 0);
+                updateStats(client2, 0);
             }
             close(to_client1);
             close(from_client1);
