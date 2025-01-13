@@ -44,8 +44,8 @@ int main() {
             to_client1 = server_handshake_half(&to_client1, from_client1);
             to_client2 = server_handshake_half(&to_client2, from_client2);
 
-            char client1User[100];
-            char client2User[100];
+            char client1User[20];
+            char client2User[20];
             struct user * client1;
             struct user * client2;
             read(from_client1, client1User, sizeof(client1User));
