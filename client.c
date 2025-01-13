@@ -24,7 +24,7 @@ int main() {
     //greetings to user
     //user login/create account? ("accounts" would just be sign in with username)
     //le game
-    char usernameBuff[10];
+    char usernameBuff[20];
     printf("Enter username (case sensitive): ");
     fflush(stdout);
     fgets(usernameBuff, sizeof(usernameBuff), stdin);
@@ -38,6 +38,9 @@ int main() {
         printf("Hello %s. Your new profile has been created and progress will be saved.\n", usernameBuff);
     }
     */
+    char welcomeMessage[200];
+    read(from_server, welcomeMessage, sizeof(welcomeMessage));
+    printf("%s", welcomeMessage);
     for (int i = 0; i < 3; i++) {
         char connectBuffer[10];
         //sleep(1);

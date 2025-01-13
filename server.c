@@ -45,11 +45,17 @@ int main() {
             to_client2 = server_handshake_half(&to_client2, from_client2);
 
             char client1User[20];
-            char client2User[20];
+            char client2User [20];
             struct user * client1;
             struct user * client2;
             read(from_client1, client1User, sizeof(client1User));
             read(from_client2, client2User, sizeof(client2User));
+            if (client1User[strlen(client1User) - 1] == '\n') { //remove newline
+                client1User[strlen(client1User) - 1] = '\0';
+            }
+            if (client2User[strlen(client2User) - 1] == '\n') { //remove newline
+                client2User[strlen(client2User) - 1] = '\0';
+            }
             //USER 1
             char client1UserConf[200];
             if ((client1 = loadUser(client1User, dataFile))) {
