@@ -34,14 +34,14 @@ int main() {
         printerror();
         printf("test\n");
     }
+    int whilecounter = 0;
     while (1) {
-        printf("Looking for client 1\n");
+        printf("[Game %d]: Looking for client 1\n", whilecounter+1);
         from_client1 = server_setup();
-        printf("Client 1 found\n");
-        printf("Looking for client 2\n");
+        printf("[Game %d]: Client 1 found\n", whilecounter+1);
+        printf("[Game %d]: Looking for client 2\n", whilecounter+1);
         from_client2 = server_setup();
-        printf("Client 2 found\n");
-
+        printf("[Game %d]: Client 2 found\n", whilecounter+1);
         if (fork() == 0) {
             int score1 = 0;
             int score2 = 0;
@@ -85,7 +85,7 @@ int main() {
                 char resultbuff[200];
                 char client1Input[10];
                 char client2Input[10];
-                printf("\n---Round %d---\n", i+1);
+                printf("\n[Game %d]: ---Round %d---\n\n", whilecounter+1, i+1);
                 //read from clients, handle clients exiting
                 int client1Bytes = read(from_client1, client1Input, sizeof(client1Input));
                 if (!client1Bytes) {
@@ -110,7 +110,7 @@ int main() {
                     client2Input[strlen(client2Input) - 1] = '\0';
                 }
 
-                printf("Client 1 played %s, client 2 played %s.\n", client1Input, client2Input);
+                printf("[Game %d]: Client 1 played %s, client 2 played %s.\n", whilecounter+1, client1Input, client2Input);
                 if (!strcmp(client1Input, client2Input)) {
                     sprintf(resultbuff, "Both clients chose %s. Round skipped.\n", client1Input);
                 }
@@ -168,14 +168,14 @@ int main() {
             char losebuff[30];
             sprintf(losebuff, "You lose.\n");
             if (score1>score2) { //Client 1 wins
-                printf("\n%s wins\n", client1User);
+                printf("\n[Game %d]: %s wins\n", whilecounter+1, client1User);
                 write(to_client1, winbuff, strlen(winbuff)+1);
                 write(to_client2, losebuff, strlen(losebuff)+1);
                 updateStats(client1, 1, dataFile);
                 updateStats(client2, 0, dataFile);
             }
             else if (score2>score1) { //Client 2 wins
-            printf("\n%s wins\n", client2User);
+            printf("\n[Game %d]: %s wins\n", whilecounter+1, client2User);
                 write(to_client1, losebuff, strlen(losebuff)+1);
                 write(to_client2, winbuff, strlen(winbuff)+1);
                 updateStats(client2, 1, dataFile);
@@ -183,7 +183,7 @@ int main() {
             }
             else { //neither wins
                 char neitherbuff[30];
-                printf("\nNeither player won.\n");
+                printf("\n[Game %d]: Neither player won.\n", whilecounter+1);
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
@@ -196,5 +196,6 @@ int main() {
             close(from_client2);
             exit(0);
         }
+        whilecounter++;
     }
 }
