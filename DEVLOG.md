@@ -19,6 +19,9 @@ Added basic server logic for comparing moves/inputs from two clients. Also finis
 ### 2025-01-10 - Finished basic game.
 Finished server-client exchange and tested the basic game. Verified logic of comparing client responses. ~ 35 minutes
 
+### 2025-01-13 - Finished stat logging, tested.
+Completed implementation of logging stats by prompting client for username. Tested game to make sure stats updated as desired. ~ 45 minutes
+
 ## Souvik Basak
 
 ### 2025-01-06 - Setup stuff
