@@ -26,17 +26,30 @@ int main() {
     printf("Enter username (case sensitive): ");
     fflush(stdout);
     fgets(usernameBuff, sizeof(usernameBuff), stdin);
-    write(to_server, usernameBuff, strlen(usernameBuff)+1);
+    int userwrite = write(to_server, usernameBuff, strlen(usernameBuff)+1);
+    if (userwrite == -1) {
+        printf("Server likely disconnected, game shutting down. No stats logged.\n");
+        printerror();
+        close(to_server);
+        close(from_server);
+        exit(0);
+    }
     char welcomeMessage[200];
-    read(from_server, welcomeMessage, sizeof(welcomeMessage));
+    int wcread = read(from_server, welcomeMessage, sizeof(welcomeMessage));
+    if (wcread == -1) {
+        printf("Reading welcome message failed.\n");
+        printerror();
+        close(to_server);
+        close(from_server);
+        exit(0);
+    }
     printf("%s", welcomeMessage);
-    
     for (int i = 0; i < 3; i++) {
         char connectBuffer[10];
         //sleep(1);
         //read(from_server, connectBuffer, 1); //server stalls client
         printf("---Round %d---\n", i+1);
-        printf("Enter rock, paper, or scissors (case insensitive): "); //we can add a toupper/tolower later if possible
+        printf("Enter rock, paper, or scissors (case insensitive): ");
         fflush(stdout);
         char inputBuffer[10];
         fgets(inputBuffer, sizeof(inputBuffer), stdin);
@@ -45,15 +58,28 @@ int main() {
             inputBuffer[count] = tolower(inputBuffer[count]);
             count++;
         }
-        write(to_server, inputBuffer, strlen(inputBuffer)+1);
+        int movewrite = write(to_server, inputBuffer, strlen(inputBuffer)+1);
+        if (movewrite == -1) {
+            printf("Server likely disconnected, game shutting down. No stats logged.\n");
+            printerror();
+            close(to_server);
+            close(from_server);
+            exit(0);
+        }
         //sleep(3);
         char receivedBuffer[100];
-        read(from_server, receivedBuffer, sizeof(receivedBuffer));
+        int resultread = read(from_server, receivedBuffer, sizeof(receivedBuffer));
+        if (resultread == -1) {
+            printf("Reading move logic failed.\n");
+            printerror();
+            close(to_server);
+            close(from_server);
+            exit(0);
+        }
         printf("%s\n", receivedBuffer);
         char substring[14];
         strncpy(substring, receivedBuffer, 13);
         substring[13] = '\0';
-        printf("%sx\n", substring); //DEBUG
         if (!strcmp(substring, "{DISCONNECT}:")) {
             close(to_server);
             close(from_server);
@@ -62,7 +88,14 @@ int main() {
     }
     sleep(1);
     char finalBuffer[30];
-    read(from_server, finalBuffer, sizeof(finalBuffer));
+    int finalread = read(from_server, finalBuffer, sizeof(finalBuffer));
+    if (finalread == -1) {
+        printf("Reading final message failed.\n");
+        printerror();
+        close(to_server);
+        close(from_server);
+        exit(0);
+    }
     printf("%s\n", finalBuffer);
     close(to_server);
     close(from_server);

@@ -89,19 +89,19 @@ int main() {
                 //read from clients, handle clients exiting
                 int client1Bytes = read(from_client1, client1Input, sizeof(client1Input));
                 if (!client1Bytes) {
-                  sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client1User, client2User);
-                  write(to_client2, resultbuff, strlen(resultbuff)+1);
-                  updateStats(client2, 1, dataFile);
-                  updateStats(client1, 0, dataFile);
-                  exit(0);
+                    sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client1User, client2User);
+                    write(to_client2, resultbuff, strlen(resultbuff)+1);
+                    updateStats(client2, 1, dataFile);
+                    updateStats(client1, 0, dataFile);
+                    exit(0);
                 }
                 int client2Bytes = read(from_client2, client2Input, sizeof(client2Input));
                 if (!client2Bytes) {
-                  sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client2User, client1User);
-                  write(to_client1, resultbuff, strlen(resultbuff)+1);
-                  updateStats(client1, 1, dataFile);
-                  updateStats(client2, 0, dataFile);
-                  exit(0);
+                    sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client2User, client1User);
+                    write(to_client1, resultbuff, strlen(resultbuff)+1);
+                    updateStats(client1, 1, dataFile);
+                    updateStats(client2, 0, dataFile);
+                    exit(0);
                 }
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
