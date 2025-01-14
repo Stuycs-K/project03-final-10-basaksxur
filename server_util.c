@@ -63,7 +63,7 @@ void updateStats(struct user *player, int won, int dataFile) {
 
 char *printUser(struct user *player) {
     char output[100];
-    sprintf(output, "Username: %s\nRating: %d\nRank: %s\nGames played: %d\nGames Won: %d\nGames Lost: %d\n", player->username, player->rating, player->rank, player->gamesPlayed, player->gamesWon, player->gamesLost);
+    sprintf(output, "Username: %s\nRating: %d\nRank: %s\nGames Played: %d\nGames Won: %d\nGames Lost: %d\n", player->username, player->rating, player->rank, player->gamesPlayed, player->gamesWon, player->gamesLost);
     return strdup(output);
 }
 
