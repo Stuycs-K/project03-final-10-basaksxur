@@ -36,7 +36,7 @@ int main() {
         //sleep(1);
         //read(from_server, connectBuffer, 1); //server stalls client
         printf("---Round %d---\n", i+1);
-        printf("Enter rock, paper, or scissors (lowercase): "); //we can add a toupper/tolower later if possible
+        printf("Enter rock, paper, or scissors (case insensitive): "); //we can add a toupper/tolower later if possible
         fflush(stdout);
         char inputBuffer[10];
         fgets(inputBuffer, sizeof(inputBuffer), stdin);
