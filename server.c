@@ -50,7 +50,7 @@ int main() {
             to_client2 = server_handshake_half(&to_client2, from_client2);
 
             char client1User[20];
-            char client2User [20];
+            char client2User[20];
             struct user * client1;
             struct user * client2;
             read(from_client1, client1User, sizeof(client1User));
@@ -103,7 +103,6 @@ int main() {
                   updateStats(client2, 0, dataFile);
                   exit(0);
                 }
-                printf("C1: %d, C2: %d\n", client1Bytes, client2Bytes);
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
                 }
