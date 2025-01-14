@@ -84,11 +84,9 @@ int main() {
             for (int i = 0; i < 3; i++) {
                 char client1Input[10];
                 char client2Input[10];
-                printf("New round\n"); //DEBUG
-                //printf("got past write\n"); //DEBUG
+                printf("\n---Round %d---\n", i+1);
                 read(from_client1, client1Input, sizeof(client1Input));
                 read(from_client2, client2Input, sizeof(client2Input));
-                //printf("got past read inputs\n"); //DEBUG
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
                 }
@@ -149,17 +147,20 @@ int main() {
                 write(to_client1, resultbuff, strlen(resultbuff)+1);
                 write(to_client2, resultbuff, strlen(resultbuff)+1);
             }
+            sleep(1);
             char winbuff[30];
             sprintf(winbuff, "You win.\n");
             char losebuff[30];
             sprintf(losebuff, "You lose.\n");
             if (score1>score2) { //Client 1 wins
+                printf("\n%s wins\n", client1User);
                 write(to_client1, winbuff, strlen(winbuff)+1);
                 write(to_client2, losebuff, strlen(losebuff)+1);
                 updateStats(client1, 1, dataFile);
                 updateStats(client2, 0, dataFile);
             }
             else if (score2>score1) { //Client 2 wins
+            printf("\n%s wins\n", client2User);
                 write(to_client1, losebuff, strlen(losebuff)+1);
                 write(to_client2, winbuff, strlen(winbuff)+1);
                 updateStats(client2, 1, dataFile);
@@ -167,6 +168,7 @@ int main() {
             }
             else { //neither wins
                 char neitherbuff[30];
+                printf("\nNeither player won.\n");
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
