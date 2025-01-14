@@ -50,6 +50,15 @@ int main() {
         char receivedBuffer[100];
         read(from_server, receivedBuffer, sizeof(receivedBuffer));
         printf("%s\n", receivedBuffer);
+        char substring[14];
+        strncpy(substring, receivedBuffer, 13);
+        substring[13] = '\0';
+        printf("%sx\n", substring); //DEBUG
+        if (!strcmp(substring, "{DISCONNECT}:")) {
+            close(to_server);
+            close(from_server);
+            exit(0);
+        }
     }
     sleep(1);
     char finalBuffer[30];
