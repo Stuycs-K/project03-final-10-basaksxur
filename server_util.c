@@ -26,7 +26,7 @@ struct user *loadUser(char *username, int dataFile) {
     return NULL;
 }
 
-void updateStats(struct user *player, int won) {
+void updateStats(struct user *player, int won, int dataFile) {
     player->gamesPlayed++;
     if (won) {
         player->rating += 20;
@@ -45,6 +45,16 @@ void updateStats(struct user *player, int won) {
         strcpy(player->rank, "Platinum");
     } else {
         strcpy(player->rank, "Diamond");
+    }
+
+    struct user *temp = malloc(sizeof(struct user));
+    lseek(dataFile, 0, SEEK_SET);
+    while (read(dataFile, temp, sizeof(struct user))) {
+        if (!strcmp(temp->username, player->username)) {
+            lseek(dataFile, - sizeof(struct user), SEEK_CUR);
+            write(dataFile, player, sizeof(struct user));
+            break;
+        }
     }
 }
 

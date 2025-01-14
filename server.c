@@ -28,7 +28,12 @@ static void sighandler(int signo) {
 int main() {
     srand(time(NULL));
     signal(SIGINT, sighandler);
-    int dataFile = open("userdata.dat", O_RDWR, 0);
+    int dataFile = open("userdata.dat", O_RDWR | O_CREAT, 0664);
+    if (dataFile==-1) {
+        printf("test\n");
+        printerror();
+        printf("test\n");
+    }
     while (1) {
         printf("Looking for client 1\n");
         from_client1 = server_setup();
@@ -59,21 +64,21 @@ int main() {
             //USER 1
             char client1UserConf[200];
             if ((client1 = loadUser(client1User, dataFile))) {
-                sprintf(client1UserConf, "Welcome back %s\n", printUser(client1));
+                sprintf(client1UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client1));
             }
             else {
                 client1 = createUser(client1User, dataFile);
-                sprintf(client1UserConf, "Your new profile has been created:%s\n", printUser(client1));
+                sprintf(client1UserConf, "Your new profile has been created:\n\n%s\n", printUser(client1));
             }
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             //USER 2
             char client2UserConf[200];
             if ((client2 = loadUser(client2User, dataFile))) {
-                sprintf(client2UserConf, "Welcome back %s\n", printUser(client2));
+                sprintf(client2UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client2));
             }
             else {
                 client2 = createUser(client2User, dataFile);
-                sprintf(client2UserConf, "Your new profile has been created:%s\n", printUser(client2));
+                sprintf(client2UserConf, "Your new profile has been created:\n\n%s\n", printUser(client2));
             }
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
             for (int i = 0; i < 3; i++) {
@@ -151,22 +156,22 @@ int main() {
             if (score1>score2) { //Client 1 wins
                 write(to_client1, winbuff, strlen(winbuff)+1);
                 write(to_client2, losebuff, strlen(losebuff)+1);
-                updateStats(client1, 1);
-                updateStats(client2, 0);
+                updateStats(client1, 1, dataFile);
+                updateStats(client2, 0, dataFile);
             }
             else if (score2>score1) { //Client 2 wins
                 write(to_client1, losebuff, strlen(losebuff)+1);
                 write(to_client2, winbuff, strlen(winbuff)+1);
-                updateStats(client2, 1);
-                updateStats(client1, 0);
+                updateStats(client2, 1, dataFile);
+                updateStats(client1, 0, dataFile);
             }
             else { //neither wins
                 char neitherbuff[30];
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
-                updateStats(client2, 0);
-                updateStats(client2, 0);
+                updateStats(client1, 0, dataFile);
+                updateStats(client2, 0, dataFile);
             }
             close(to_client1);
             close(from_client1);

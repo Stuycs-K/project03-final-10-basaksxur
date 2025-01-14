@@ -55,8 +55,12 @@ int main() {
         //sleep(3);
         char receivedBuffer[100];
         read(from_server, receivedBuffer, sizeof(receivedBuffer));
-        printf("%s\n",receivedBuffer);
+        printf("%s\n", receivedBuffer);
     }
+    sleep(1);
+    char finalBuffer[30];
+    read(from_server, finalBuffer, sizeof(finalBuffer));
+    printf("%s\n", finalBuffer);
     close(to_server);
     close(from_server);
 }
