@@ -172,8 +172,8 @@ int main() {
                 sprintf(neitherbuff, "Neither player won.\n");
                 write(to_client1, neitherbuff, strlen(neitherbuff)+1);
                 write(to_client2, neitherbuff, strlen(neitherbuff)+1);
-                updateStats(client1, 0, dataFile);
-                updateStats(client2, 0, dataFile);
+                updateStats(client1, 2, dataFile);
+                updateStats(client2, 2, dataFile);
             }
             close(to_client1);
             close(from_client1);
