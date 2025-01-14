@@ -86,9 +86,10 @@ int main() {
                 char client1Input[10];
                 char client2Input[10];
                 printf("\n---Round %d---\n", i+1);
+                //read from clients, handle clients exiting
                 int client1Bytes = read(from_client1, client1Input, sizeof(client1Input));
                 if (!client1Bytes) {
-                  sprintf(resultbuff, "%s disconnected. %s automatically wins", client1User, client2User);
+                  sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client1User, client2User);
                   write(to_client2, resultbuff, strlen(resultbuff)+1);
                   updateStats(client2, 1, dataFile);
                   updateStats(client1, 0, dataFile);
@@ -96,7 +97,7 @@ int main() {
                 }
                 int client2Bytes = read(from_client2, client2Input, sizeof(client2Input));
                 if (!client2Bytes) {
-                  sprintf(resultbuff, "%s disconnected. %s automatically wins", client2User, client1User);
+                  sprintf(resultbuff, "{DISCONNECT}: %s disconnected. %s automatically wins", client2User, client1User);
                   write(to_client1, resultbuff, strlen(resultbuff)+1);
                   updateStats(client1, 1, dataFile);
                   updateStats(client2, 0, dataFile);
