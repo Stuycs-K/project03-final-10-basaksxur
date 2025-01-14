@@ -22,6 +22,9 @@ Finished server-client exchange and tested the basic game. Verified logic of com
 ### 2025-01-13 - Finished stat logging, tested.
 Completed implementation of logging stats by prompting client for username. Tested game to make sure stats updated as desired. ~ 45 minutes
 
+### 2025-01-14 - Added SIGINT handling.
+Added server-side and client-side handling for SIGINT occurring on either end. ~ 35 minutes
+
 ## Souvik Basak
 
 ### 2025-01-06 - Setup stuff
