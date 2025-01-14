@@ -8,8 +8,8 @@ struct user *createUser(char username[], int dataFile) {
     newUser->gamesPlayed = 0;
     newUser->gamesWon = 0;
     newUser->gamesLost = 0;
+    newUser->gamesTied = 0;
     strcpy(newUser->rank, "Silver");
-    newUser->connected = 0;
     write(dataFile, newUser, sizeof(struct user));
     return newUser;
 }
@@ -28,13 +28,16 @@ struct user *loadUser(char *username, int dataFile) {
 
 void updateStats(struct user *player, int won, int dataFile) {
     player->gamesPlayed++;
-    if (won) {
+    if (won == 1) {
         player->rating += 20;
         player->gamesWon++;
+    } else if (won == 2){
+        player->gamesTied++;
     } else {
         player->rating -= 20;
         player->gamesLost++;
     }
+
     if (player->rating <= 60) {
         strcpy(player->rank, "Plastic");
     } else if (player->rating <= 140) {

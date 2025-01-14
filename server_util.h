@@ -11,8 +11,8 @@ struct user {
     int gamesPlayed;
     int gamesWon;
     int gamesLost;
+    int gamesTied;
     char rank[10];
-    int connected;
 };
 struct user *createUser(char username[], int dataFile);
 struct user *loadUser(char *username, int dataFile);
