@@ -27,5 +27,14 @@ Completed implementation of logging stats by prompting client for username. Test
 ### 2025-01-06 - Setup stuff
 Worked on PROPOSAL.md. ~ 12 minutes
 
+### 2025-01-08 - Big changes to server/subservers
+Instead of having shared memory segments for subservers to communicate with each other, each subserver simply has access to both clients once they connect. ~ 30 minutes
+
+### 2025-01-09 - Debugging and stuff
+Did a bunch of debugging with server sending and reading from client. ~ 30 minutes
+
 ### 2025-01-12 - User data
 Created a struct to hold user data and wrote functions to load and create users. ~ 30 minutes
+
+### 2025-01-13 - Fixing stuff and debugging
+Did a lot of debugging with loading and creating new users, as well as fine-tuning print statements during the game. Wrote a debugging function in server_util. ~ 41 minutes
