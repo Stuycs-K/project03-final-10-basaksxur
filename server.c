@@ -82,11 +82,27 @@ int main() {
             }
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
             for (int i = 0; i < 3; i++) {
+                char resultbuff[200];
                 char client1Input[10];
                 char client2Input[10];
                 printf("\n---Round %d---\n", i+1);
-                read(from_client1, client1Input, sizeof(client1Input));
-                read(from_client2, client2Input, sizeof(client2Input));
+                int client1Bytes = read(from_client1, client1Input, sizeof(client1Input));
+                if (!client1Bytes) {
+                  sprintf(resultbuff, "%s disconnected. %s automatically wins", client1User, client2User);
+                  write(to_client2, resultbuff, strlen(resultbuff)+1);
+                  updateStats(client2, 1, dataFile);
+                  updateStats(client1, 0, dataFile);
+                  exit(0);
+                }
+                int client2Bytes = read(from_client2, client2Input, sizeof(client2Input));
+                if (!client2Bytes) {
+                  sprintf(resultbuff, "%s disconnected. %s automatically wins", client2User, client1User);
+                  write(to_client1, resultbuff, strlen(resultbuff)+1);
+                  updateStats(client1, 1, dataFile);
+                  updateStats(client2, 0, dataFile);
+                  exit(0);
+                }
+                printf("C1: %d, C2: %d\n", client1Bytes, client2Bytes);
                 if (client1Input[strlen(client1Input) - 1] == '\n') { //to make comparison smoother
                     client1Input[strlen(client1Input) - 1] = '\0';
                 }
@@ -95,7 +111,6 @@ int main() {
                 }
 
                 printf("Client 1 played %s, client 2 played %s.\n", client1Input, client2Input);
-                char resultbuff[200];
                 if (!strcmp(client1Input, client2Input)) {
                     sprintf(resultbuff, "Both clients chose %s. Round skipped.\n", client1Input);
                 }
