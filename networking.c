@@ -15,7 +15,6 @@ int server_setup(){
     if (access(WKP, F_OK) == 0) {
         if (unlink(WKP) == -1) {
             printerror();
-            printf("1\n");
             exit(EXIT_FAILURE);
         }
     }

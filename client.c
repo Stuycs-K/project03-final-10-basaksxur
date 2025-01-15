@@ -44,6 +44,14 @@ int main() {
         exit(0);
     }
     printf("%s", welcomeMessage);
+    char wcsubstring[14];
+    strncpy(wcsubstring, welcomeMessage, 13);
+    wcsubstring[13] = '\0';
+    if (!strcmp(wcsubstring, "{DISCONNECT}:")) {
+        close(to_server);
+        close(from_server);
+        exit(0);
+    }
     for (int i = 0; i < 3; i++) {
         char connectBuffer[10];
         //sleep(1);
