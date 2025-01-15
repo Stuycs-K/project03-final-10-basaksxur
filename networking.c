@@ -1,10 +1,10 @@
 #include "networking.h"
-#include <stdio.h>  
+#include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#include <sys/stat.h> 
-#include <unistd.h> 
+#include <sys/stat.h>
+#include <unistd.h>
 
 int printerror(){
     printf("Error: [%d] (%s)\n", errno, strerror(errno));
@@ -15,6 +15,7 @@ int server_setup(){
     if (access(WKP, F_OK) == 0) {
         if (unlink(WKP) == -1) {
             printerror();
+            printf("1\n");
             exit(EXIT_FAILURE);
         }
     }
@@ -22,6 +23,7 @@ int server_setup(){
         printerror();
         exit(EXIT_FAILURE);
     }
+    chmod(WKP, 0666);
     int from_client = open(WKP, O_RDONLY);
     if (from_client == -1) {
         printerror();
@@ -43,6 +45,7 @@ int server_handshake(int *to_client){
 int client_handshake(int *to_server){
     *to_server = open(WKP, O_WRONLY);
     if (*to_server == -1) {
+        printf("1\n");
         printerror();
         exit(EXIT_FAILURE);
     }
@@ -51,11 +54,13 @@ int client_handshake(int *to_server){
     if (access(PP, F_OK) == 0) {
         if (unlink(PP) == -1) {
             printerror();
+            printf("2\n");
             exit(EXIT_FAILURE);
         }
     }
     if (mkfifo(PP, 0666) == -1) {
         printerror();
+        printf("3\n");
         exit(EXIT_FAILURE);
     }
     write(*to_server, PP, HANDSHAKE_BUFFER_SIZE);
