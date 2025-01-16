@@ -62,7 +62,8 @@ int main() {
                 exit(0);
             }
             int wcread2 = read(from_client2, client2User, sizeof(client2User));
-            if (wcread1 <= 0) {
+            printf("%d\n", wcread2);
+            if (wcread2 <= 0) {
                 printf("test\n");
                 char error[200];
                 sprintf(error, "{DISCONNECT}: Other user disconnected. No stats logged.\n");
@@ -84,7 +85,7 @@ int main() {
                 client1 = createUser(client1User, dataFile);
                 sprintf(client1UserConf, "Your new profile has been created:\n\n%s\n", printUser(client1));
             }
-            
+
             //USER 2
             char client2UserConf[200];
             if ((client2 = loadUser(client2User, dataFile))) {
