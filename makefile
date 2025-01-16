@@ -27,10 +27,10 @@ move_final:
 	@chmod 755 $(SUBD)
 
 server: $(SUBD)/server_
-	@$(SUBD)/server_
+	@cd $(SUBD) && ./server_
 
 client: $(SUBD)/client_
-	@$(SUBD)/client_
+	@cd $(SUBD) && ./client_
 
 clean:
 	@rm -f *.o server_ client_
