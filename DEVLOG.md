@@ -28,6 +28,9 @@ Added server-side and client-side handling for SIGINT occurring on either end. ~
 ### 2025-01-15 - Worked on perms & server handling.
 Tried to improve server-side handling of errors/SIGINT, tried to fix client perms denied. ~ 40 minutes
 
+### 2025-01-16 - Finished tmp access, updated makefile.
+Fixed client perms through adding chmod, updated makefile to allow client to specify subdirectory in tmp to put server/client in. ~ 45 minutes
+
 ## Souvik Basak
 
 ### 2025-01-06 - Setup stuff
