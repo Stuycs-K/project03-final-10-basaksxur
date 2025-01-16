@@ -54,7 +54,21 @@ int main() {
             struct user * client1;
             struct user * client2;
             int wcread1 = read(from_client1, client1User, sizeof(client1User));
+            //printf("test\n");
+            if (wcread1 <= 0) {
+                char error[200];
+                sprintf(error, "{DISCONNECT}: Other user disconnected. No stats logged.\n");
+                write(to_client2, error, strlen(error)+1);
+                exit(0);
+            }
             int wcread2 = read(from_client2, client2User, sizeof(client2User));
+            if (wcread1 <= 0) {
+                printf("test\n");
+                char error[200];
+                sprintf(error, "{DISCONNECT}: Other user disconnected. No stats logged.\n");
+                write(to_client1, error, strlen(error)+1);
+                exit(0);
+            }
             if (client1User[strlen(client1User) - 1] == '\n') { //remove newline
                 client1User[strlen(client1User) - 1] = '\0';
             }
@@ -63,34 +77,23 @@ int main() {
             }
             //USER 1
             char client1UserConf[200];
-            if (wcread1) {
-                if ((client1 = loadUser(client1User, dataFile))) {
-                    sprintf(client1UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client1));
-                }
-                else {
-                    client1 = createUser(client1User, dataFile);
-                    sprintf(client1UserConf, "Your new profile has been created:\n\n%s\n", printUser(client1));
-                }
+            if ((client1 = loadUser(client1User, dataFile))) {
+                sprintf(client1UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client1));
             }
             else {
-                sprintf(client1UserConf, "{DISCONNECT}: Other user disconnected. No stats logged.\n");
+                client1 = createUser(client1User, dataFile);
+                sprintf(client1UserConf, "Your new profile has been created:\n\n%s\n", printUser(client1));
             }
             
             //USER 2
             char client2UserConf[200];
-            if (wcread2) {
-                if ((client2 = loadUser(client2User, dataFile))) {
-                    sprintf(client2UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client2));
-                }
-                else {
-                    client2 = createUser(client2User, dataFile);
-                    sprintf(client2UserConf, "Your new profile has been created:\n\n%s\n", printUser(client2));
-                }
+            if ((client2 = loadUser(client2User, dataFile))) {
+                sprintf(client2UserConf, "Your saved profile has been loaded:\n\n%s\n", printUser(client2));
             }
             else {
-                sprintf(client2UserConf, "{DISCONNECT}: Other user disconnected. No stats logged.\n");
+                client2 = createUser(client2User, dataFile);
+                sprintf(client2UserConf, "Your new profile has been created:\n\n%s\n", printUser(client2));
             }
-
             write(to_client1, client1UserConf, strlen(client1UserConf)+1);
             write(to_client2, client2UserConf, strlen(client2UserConf)+1);
             for (int i = 0; i < 3; i++) {
