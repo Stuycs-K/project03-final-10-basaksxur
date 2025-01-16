@@ -1,4 +1,7 @@
-compile: compile_client compile_server
+SUBD = /tmp/$(ARGS)
+ARGS ?= rpsfolder
+
+compile: compile_client compile_server move_final
 
 compile_client: client.o networking.o
 	@gcc -o client_ client.o networking.o
@@ -18,11 +21,17 @@ networking.o: networking.c networking.h
 server_util.o: server_util.c server_util.h
 	@gcc -c server_util.c
 
+move_final:
+	@mkdir -p $(SUBD)
+	@mv server_ client_ $(SUBD)
+	@chmod 755 $(SUBD)
+
 server: server_
-	@./server_
+	@./$(SUBD)/server_
 
 client: client_
-	@./client_
+	@./$(SUBD)/client_
 
 clean:
 	@rm -f *.o server_ client_
+	@rm -rf /tmp/$(ARGS)
