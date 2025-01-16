@@ -26,11 +26,11 @@ move_final:
 	@mv server_ client_ $(SUBD)
 	@chmod 755 $(SUBD)
 
-server: server_
-	@./$(SUBD)/server_
+server: $(SUBD)/server_
+	@$(SUBD)/server_
 
-client: client_
-	@./$(SUBD)/client_
+client: $(SUBD)/client_
+	@$(SUBD)/client_
 
 clean:
 	@rm -f *.o server_ client_
