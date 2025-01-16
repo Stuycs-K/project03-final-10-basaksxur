@@ -62,6 +62,7 @@ int client_handshake(int *to_server){
         printf("3\n");
         exit(EXIT_FAILURE);
     }
+    chmod(PP, 0666);
     write(*to_server, PP, HANDSHAKE_BUFFER_SIZE);
     int downstream = open(PP, O_RDONLY);
     int SYN_ACK;

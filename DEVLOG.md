@@ -25,6 +25,9 @@ Completed implementation of logging stats by prompting client for username. Test
 ### 2025-01-14 - Added SIGINT handling.
 Added server-side and client-side handling for SIGINT occurring on either end. ~ 35 minutes
 
+### 2025-01-15 - Worked on perms & server handling.
+Tried to improve server-side handling of errors/SIGINT, tried to fix client perms denied. ~ 40 minutes
+
 ## Souvik Basak
 
 ### 2025-01-06 - Setup stuff
