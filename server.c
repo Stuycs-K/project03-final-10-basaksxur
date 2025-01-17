@@ -62,7 +62,6 @@ int main() {
                 exit(0);
             }
             int wcread2 = read(from_client2, client2User, sizeof(client2User));
-            printf("%d\n", wcread2);
             if (wcread2 <= 0) {
                 char error[200];
                 sprintf(error, "{DISCONNECT}: Other user disconnected. No stats logged.\n");

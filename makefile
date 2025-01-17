@@ -37,4 +37,5 @@ client: $(SUBD)/client_
 
 clean:
 	@rm -f *.o server_ client_
-	@rm -rf /tmp/$(ARGS)
+	@rm -rf $(SUBD)
+	@rm -f /tmp/makefile
