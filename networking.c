@@ -12,6 +12,7 @@ int printerror(){
 }
 
 int server_setup(){
+    const char *folder = getenv("SUBD");
     if (access(WKP, F_OK) == 0) {
         if (unlink(WKP) == -1) {
             printerror();

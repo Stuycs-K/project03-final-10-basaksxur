@@ -1,5 +1,6 @@
 SUBD = /tmp/$(ARGS)
 ARGS ?= rpsfolder
+export SUBD
 
 compile: compile_client compile_server move_final
 
@@ -25,6 +26,7 @@ move_final:
 	@mkdir -p $(SUBD)
 	@mv server_ client_ $(SUBD)
 	@chmod 755 $(SUBD)
+	@export SUBD
 
 server: $(SUBD)/server_
 	@cd $(SUBD) && ./server_
