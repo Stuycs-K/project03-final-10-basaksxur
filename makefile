@@ -23,9 +23,10 @@ server_util.o: server_util.c server_util.h
 	@gcc -c server_util.c
 
 move_final:
+	@cp ./makefile /tmp
 	@mkdir -p $(SUBD)
 	@mv server_ client_ $(SUBD)
-	@chmod 755 $(SUBD)
+	@chmod 777 $(SUBD)
 	@export SUBD
 
 server: $(SUBD)/server_
