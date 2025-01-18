@@ -47,3 +47,12 @@ Created a struct to hold user data and wrote functions to load and create users.
 
 ### 2025-01-13 - Fixing stuff and debugging
 Did a lot of debugging with loading and creating new users, as well as fine-tuning print statements during the game. Wrote a debugging function in server_util. ~ 41 minutes
+
+### 2025-01-14 - Updated server logic
+Updated server logic: tweaked server messages and made a client automatically lose if they disconnect.
+
+### 2025-01-15 & 2025-01-16 - Permission issues
+Fixed permission issues with private and WKP using chmod, fixed other bugs. ~ 80 minutes
+
+### 2024-01-17 - Running in /tmp
+Did debugging with running the game in the /tmp file and fixed makefile. ~ 40 minutes
